@@ -32,9 +32,9 @@ with open('lost.txt', 'w') as f:
             img = np.array(rle_decode(rle_encoded[i], (768, 768)))
             #cv2.imshow('I', img)
             #cv2.waitKey(0)
-        val = cv2.imwrite(img_names[i], img)
+        val = cv2.imwrite("../content/kaggle/outputs/"+img_names[i], img)
         print(img.shape, val)
         if(val == False):
-            f.write(img_names[i])
+            f.write("../content/kaggle/outputs/"+img_names[i])
         
         
