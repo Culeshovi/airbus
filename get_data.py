@@ -36,6 +36,10 @@ class DataLogger():
         OUT_Batch = []
         for i in range(0, len(input_batch_path)):
             temp = cv2.imread(input_batch_path[i]).astype('float32')
+            temp = temp / temp.max()
+            #print(temp.max(), temp.min())
+            #cv2.imshow('I', temp)
+            #cv2.waitKey(0)
             temp = np.transpose(temp)
             temp = self.process(temp)
             temp = np.expand_dims(temp, axis=0)
@@ -44,6 +48,9 @@ class DataLogger():
             temp = cv2.imread(output_batch_path[i], 0)
             ret,thresh = cv2.threshold(temp,0,1,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
             temp = thresh.astype('float32')
+            #print(temp.max(), temp.min())
+            #cv2.imshow('I', temp)
+            #cv2.waitKey(0)
             temp = np.transpose(temp)
             temp = self.process(temp)
             temp = np.expand_dims(temp, axis=0)
@@ -52,6 +59,3 @@ class DataLogger():
         OUT_Batch = np.vstack(OUT_Batch)
         self.init = self.init+batch_size
         return [IN_Batch, OUT_Batch]
-              
-        
-        
