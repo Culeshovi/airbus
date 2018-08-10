@@ -11,7 +11,7 @@ import pandas as pd
 import cv2
 import numpy as np
 
-DataFrame = pd.read_csv("../content/kaggle/train_ship_segmentations.csv")
+DataFrame = pd.read_csv("train_ship_segmentations.csv")
 img_names = DataFrame['ImageId']
 rle_encoded = DataFrame['EncodedPixels']
 img_names = pd.unique(img_names)
