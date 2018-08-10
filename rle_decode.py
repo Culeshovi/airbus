@@ -5,6 +5,8 @@ Created on Sun Aug  5 11:51:16 2018
 @author: subha
 """
 
+
+
 import pandas as pd
 import cv2
 import numpy as np
@@ -12,6 +14,7 @@ import numpy as np
 DataFrame = pd.read_csv("../content/kaggle/train_ship_segmentations.csv")
 img_names = DataFrame['ImageId']
 rle_encoded = DataFrame['EncodedPixels']
+img_names = pd.unique(img_names)
 
 def rle_decode(mask_rle, shape):
     s = mask_rle.split()
@@ -21,20 +24,30 @@ def rle_decode(mask_rle, shape):
     img = np.zeros(shape[0]*shape[1], dtype=np.uint8)
     for lo, hi in zip(starts, ends):
         img[lo:hi] = 255
-    return img.reshape(shape)
+    return img.reshape(shape).T
 #%%
 with open('lost.txt', 'w') as f:
-    for i in range(0, len(rle_encoded)):
+    for i in range(0, len(img_names)):
         print(i)
-        if(isinstance(rle_encoded[i], float)):
-            img = np.zeros((768, 768))
-        else:
-            img = np.array(rle_decode(rle_encoded[i], (768, 768)))
-            #cv2.imshow('I', img)
-            #cv2.waitKey(0)
+        img_masks = DataFrame.loc[DataFrame['ImageId'] == img_names[i], 'EncodedPixels'].tolist()
+        img = np.zeros((768, 768))
+        for j in img_masks:
+            if(isinstance(j, float)):
+                img += np.zeros((768, 768))
+            else:
+                #img = np.zeros((768, 768))
+                img += np.array(rle_decode(j, (768, 768)))
+        #cv2.imshow('I', img)
+        #cv2.waitKey(0)
         val = cv2.imwrite("../content/kaggle/outputs/"+img_names[i], img)
         print(img.shape, val)
         if(val == False):
-            f.write("../content/kaggle/outputs/"+img_names[i])
+             f.write("../content/kaggle/outputs/"+img_names[i])
         
         
+
+
+
+
+
+
