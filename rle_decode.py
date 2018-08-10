@@ -40,7 +40,7 @@ with open('lost.txt', 'w') as f:
         #cv2.imshow('I', img)
         #cv2.waitKey(0)
         val = cv2.imwrite("/outputs/"+img_names[i], img)
-        print(img.shape, val)
+        #print(img.shape, val)
         if(val == False):
              f.write("/outputs/"+img_names[i])
         
